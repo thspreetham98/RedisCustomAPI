@@ -5,7 +5,7 @@ using RedisCustomAPI.Services;
 using RedisCustomAPI.Models;
 using System.Collections.Generic;
 
-namespace LocaServicelTest
+namespace LocalServiceTest
 {
     public class LocalServiceShould
     {

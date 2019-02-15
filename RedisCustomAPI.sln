@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedisCustomAPI", "RedisCustomAPI\RedisCustomAPI.csproj", "{C7AB3C3D-B69A-41ED-AD2A-69346C52468D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocaServicelTest", "LocaServicelTest\LocaServicelTest.csproj", "{2A9E9550-8D02-4E5A-B558-FD60CF8EB412}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceTest", "LocaServicelTest\ServiceTest.csproj", "{2A9E9550-8D02-4E5A-B558-FD60CF8EB412}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
