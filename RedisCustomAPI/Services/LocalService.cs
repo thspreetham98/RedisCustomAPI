@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using RedisCustomAPI.Models;
+using ServiceStack.Redis;
+
+namespace RedisCustomAPI.Services
+{
+    public class LocalService : ILocalService
+    {
+        public string Host { get => "127.0.0.1"; }
+        public int Port { get => 6379; }
+        public string Password { get => null; }
+
+        public void FlushAll()
+        {
+            using (IRedisClient client = new RedisClient(Host, Port, Password))
+            {
+                try
+                {
+                    client.FlushAll();
+                }
+                catch (RedisException)
+                {
+                    return;
+                }
+            }
+        }
+
+        public string GetData(string key)
+        {
+            using (IRedisClient client = new RedisClient(Host, Port, Password))
+            {
+                try
+                {
+                    return client.Get<string>(key);
+                }
+                catch (RedisException)
+                {
+                    return null;
+                }
+            }
+        }
+
+        public bool Ping()
+        {
+            using (IRedisClient client = new RedisClient(Host, Port, Password))
+            {
+                try
+                {
+                    client.Ping();
+                    return true;
+                }
+                catch (RedisException)
+                {
+                    return false;
+                }
+            }
+        }
+
+        public bool SetData(RedisEntry data)
+        {
+            using (IRedisClient client = new RedisClient(Host, Port, Password))
+            {
+                try
+                {
+                    client.Set<string>(data.Key, data.Value);
+                    return true;
+                }
+                catch (RedisException)
+                {
+                    return false;
+                }
+            }
+        }
+    }
+}
