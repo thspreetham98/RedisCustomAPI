@@ -28,6 +28,31 @@ namespace RedisCustomAPI.Services
             }
         }
 
+        public RedisDataTable GetAllAppData(string appName)
+        {
+            if (appName == null)
+            {
+                throw new ArgumentNullException("appName cannot be null");
+            }
+            if (appName.Length < 1)
+            {
+                throw new ArgumentException("Enter at least one letter");
+            }
+            appName += "*";
+            using (IRedisClient client = new RedisClient(Host, Port, Password))
+            {
+                try
+                {
+                    var keys = client.ScanAllKeys(appName);
+                    return new RedisDataTable(client.GetAll<string>(keys));
+                }
+                catch (RedisException)
+                {
+                    return null;
+                }
+            }
+        }
+
         public RedisDataTable GetAllData(List<string> keys)
         {
             if (keys.Count < 1)

@@ -88,5 +88,40 @@ namespace LocaServicelTest
             Assert.Equal(data, result);
         }
 
+        [Fact]
+        public void GetAllAppData()
+        {
+            // arrange
+            var sut = _service;
+            var appX = new RedisDataTable(new Dictionary<string, string>
+            {
+                { "app1", "data 1" },
+                { "app2", "data 2" },
+                { "app3", "data 3" }
+            });
+            var appY = new RedisDataTable(new Dictionary<string, string>
+            {
+                { "not_app1", "not_app 1" },
+                { "not_app2", "not_app 2" },
+                { "not_app3", "not_app 3" }
+            });
+            _service.FlushAll();
+            foreach (var d in appX)
+            {
+                _service.SetData(new RedisEntry(d.Key, d.Value));
+            }
+            foreach (var d in appY)
+            {
+                _service.SetData(new RedisEntry(d.Key, d.Value));
+            }
+
+            // act
+            var result1 = sut.GetAllAppData("app");
+            var result2 = sut.GetAllAppData("not_app");
+            // assert
+            Assert.Equal(appX, result1);
+            Assert.Equal(appY, result2);
+        }
+
     }
 }

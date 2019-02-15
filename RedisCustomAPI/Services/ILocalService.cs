@@ -17,5 +17,6 @@ namespace RedisCustomAPI.Services
         bool SetData(RedisEntry data);
         string GetData(string key);
         RedisDataTable GetAllData(List<string> list);
+        RedisDataTable GetAllAppData(string v);
     }
 }
