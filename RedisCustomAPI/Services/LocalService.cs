@@ -28,6 +28,25 @@ namespace RedisCustomAPI.Services
             }
         }
 
+        public RedisDataTable GetAllData(List<string> keys)
+        {
+            if (keys.Count < 1)
+            {
+                throw new ArgumentException("Pass at least one key");
+            }
+            using (IRedisClient client = new RedisClient(Host, Port, Password))
+            {
+                try
+                {
+                    return new RedisDataTable(client.GetAll<string>(keys));
+                }
+                catch (RedisException)
+                {
+                    return null;
+                }
+            }
+        }
+
         public string GetData(string key)
         {
             using (IRedisClient client = new RedisClient(Host, Port, Password))

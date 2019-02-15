@@ -16,5 +16,6 @@ namespace RedisCustomAPI.Services
         void FlushAll();
         bool SetData(RedisEntry data);
         string GetData(string key);
+        RedisDataTable GetAllData(List<string> list);
     }
 }

@@ -3,6 +3,7 @@ using Xunit;
 using Xunit.Abstractions;
 using RedisCustomAPI.Services;
 using RedisCustomAPI.Models;
+using System.Collections.Generic;
 
 namespace LocaServicelTest
 {
@@ -69,13 +70,22 @@ namespace LocaServicelTest
         {
             // arrange
             var sut = _service;
-            var data = new RedisEntry("fname", "Preetham");
+            var data = new RedisDataTable(new Dictionary<string, string>
+            {
+                {"fname", "Preetham" },
+                {"lname", "Chandra" }
+            });
             _service.FlushAll();
-            sut.SetData(data);
+            foreach(var d in data)
+            {
+                _service.SetData(new RedisEntry(d.Key, d.Value));
+            }
+            _service.SetData(new RedisEntry("garbage", "Don't fetch this"));
+
             // act
-            //var result = sut.GetData(data.Key);
+            var result = sut.GetAllData(new List<string>(data.Keys));
             // assert
-            //Assert.Equal(data.Value, result);
+            Assert.Equal(data, result);
         }
 
     }
