@@ -23,5 +23,12 @@ namespace RedisCustomAPI.Controllers
             var result = _service.Ping();
             return Ok(result);
         }
+
+        [HttpGet("appdata")]
+        public IActionResult GetAppData([FromQuery] string app)
+        {
+            var result = _service.GetAllAppData(app);
+            return Ok(result);
+        }
     }
 }

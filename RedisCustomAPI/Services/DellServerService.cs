@@ -11,9 +11,9 @@ namespace RedisCustomAPI.Services
 {
     public class DellServerService : IDellServerService
     {
-        private string _host;
-        private int _port;
-        private string _password;
+        private readonly string _host;
+        private readonly int _port;
+        private readonly string _password;
 
         public DellServerService()
         {
@@ -46,6 +46,10 @@ namespace RedisCustomAPI.Services
                 try
                 {
                     var keys = client.ScanAllKeys(appName);
+                    if(keys.Count<string>() == 0)
+                    {
+                        return new RedisDataTable(new Dictionary<string, string>());
+                    }
                     return new RedisDataTable(client.GetAll<string>(keys));
                 }
                 catch (RedisException)
