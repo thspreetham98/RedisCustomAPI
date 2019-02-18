@@ -9,6 +9,6 @@ namespace RedisCustomAPI.Services
     public interface IDellServerService
     {
         bool Ping();
-        RedisDataTable GetAllAppData(string appName);
+        RedisDataTable GetCacheDataByServiceName(string appName);
     }
 }

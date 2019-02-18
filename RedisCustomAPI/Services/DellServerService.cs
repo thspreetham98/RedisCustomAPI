@@ -30,16 +30,13 @@ namespace RedisCustomAPI.Services
             this._password = Encoding.ASCII.GetString(cryptoServiceProvider.CreateDecryptor().TransformFinalBlock(inputBuffer, 0, inputBuffer.Length));
         }
 
-        public RedisDataTable GetAllAppData(string appName)
+        public RedisDataTable GetCacheDataByServiceName(string appName)
         {
-            if (appName == null)
+            if (string.IsNullOrEmpty(appName))
             {
                 throw new ArgumentNullException("appName cannot be null");
             }
-            if (appName.Length < 1)
-            {
-                throw new ArgumentException("Enter at least one letter");
-            }
+           
             appName += "*";
             using (IRedisClient client = new RedisClient(_host, _port, _password))
             {

@@ -30,20 +30,40 @@ namespace ServiceTest
         }
 
         [Fact]
-        public void GetAllAppData()
+        public void GetCacheDataByServiceName()
         {
             // arrange
             var sut = _service;
 
             // act
-            var result = sut.GetAllAppData("DSA");
-            var ex = Assert.Throws<ArgumentException>(() => sut.GetAllAppData("No such app"));
+            var result = sut.GetCacheDataByServiceName("DSA");
+            var ex = Assert.Throws<ArgumentException>(() => sut.GetCacheDataByServiceName("No such app"));
             // assert
             foreach(var d in result)
             {
                 Assert.StartsWith("DSA", d.Key);
             }
             Assert.Equal("App not found", ex.Message);
+        }
+
+        [Fact]
+        public void GetCacheDataByMultipleServiceNames()
+        {
+            // arrange
+            var sut = _service;
+
+            // act
+            var keys = new List<string>(new string[] { "DSAProductDC", "DSAWebApp" });
+            var result = sut.GetCacheDataByMultipleServiceNames(keys);
+            //var result = sut.GetCacheDataByMultipleServiceNames("DSA");
+            //var ex = Assert.Throws<ArgumentException>(() => sut.GetCacheDataByServiceName("No such app"));
+            //// assert
+            //foreach (var d in result)
+            //{
+            //    Assert.StartsWith("DSA", d.Key);
+            //}
+            //Assert.Equal("App not found", ex.Message);
+            //Assert.Equal("App not found", ex.Message);
         }
     }
 }

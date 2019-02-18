@@ -27,8 +27,16 @@ namespace RedisCustomAPI.Controllers
         [HttpGet("appdata")]
         public IActionResult GetAppData([FromQuery] string app)
         {
-            var result = _service.GetAllAppData(app);
-            return Ok(result);
+            try
+            {
+                var result = _service.GetCacheDataByServiceName(app);
+                return Ok(result);
+            }
+            catch(ArgumentException)
+            {
+                return NotFound("App not found");
+            }
+            
         }
     }
 }
