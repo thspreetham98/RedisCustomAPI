@@ -9,13 +9,13 @@ using ServiceStack.Redis;
 
 namespace RedisCustomAPI.Services
 {
-    public class DellServerService : IDellServerService
+    public class RedisServerService : IRedisServerService
     {
         private readonly string _host;
         private readonly int _port;
         private readonly string _password;
 
-        public DellServerService()
+        public RedisServerService()
         {
             var strKey = "36fc9e60-c465-11cf-8056-444553540000";
             var strEncrypted = "Km3OJbjCLrPOAJyhf4s8HA==";
@@ -28,6 +28,38 @@ namespace RedisCustomAPI.Services
             this._host = "redis-14336.dcfredis-np.us.dell.com";
             this._port = 14336;
             this._password = Encoding.ASCII.GetString(cryptoServiceProvider.CreateDecryptor().TransformFinalBlock(inputBuffer, 0, inputBuffer.Length));
+        }
+
+        public RedisDataTable GetCacheDataByMultipleServiceNames(List<string> apps)
+        {
+            if(apps == null || apps.Count == 0)
+            {
+                throw new ArgumentNullException("appName cannot be null");
+            }
+            RedisDataTable result = new RedisDataTable(new Dictionary<string, string>());
+            using (IRedisClient client = new RedisClient(_host, _port, _password))
+            {
+                string appName;
+                foreach (var app in apps)
+                {
+                    appName = app + "*";
+                    try
+                    {
+                        var keys = client.ScanAllKeys(appName);
+                        if (keys.Count() == 0)
+                        {
+                            continue;
+                        }
+                        client.GetAll<string>(keys).ToList().ForEach(x => result.Add(x.Key, x.Value));
+                        //return new RedisDataTable(client.GetAll<string>(keys));
+                    }
+                    catch (RedisException)
+                    {
+                        return null;
+                    }
+                }
+            }
+            return result;
         }
 
         public RedisDataTable GetCacheDataByServiceName(string appName)

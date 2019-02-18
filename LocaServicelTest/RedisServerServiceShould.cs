@@ -7,15 +7,15 @@ using System.Collections.Generic;
 
 namespace ServiceTest
 {
-    public class DellServerServiceShould
+    public class RedisServerServiceShould
     {
         private readonly ITestOutputHelper _output;
-        private readonly IDellServerService _service;
+        private readonly IRedisServerService _service;
 
-        public DellServerServiceShould(ITestOutputHelper output)
+        public RedisServerServiceShould(ITestOutputHelper output)
         {
             _output = output;
-            _service = new DellServerService();
+            _service = new RedisServerService();
         }
 
         [Fact]
@@ -53,17 +53,26 @@ namespace ServiceTest
             var sut = _service;
 
             // act
-            var keys = new List<string>(new string[] { "DSAProductDC", "DSAWebApp" });
-            var result = sut.GetCacheDataByMultipleServiceNames(keys);
-            //var result = sut.GetCacheDataByMultipleServiceNames("DSA");
-            //var ex = Assert.Throws<ArgumentException>(() => sut.GetCacheDataByServiceName("No such app"));
-            //// assert
-            //foreach (var d in result)
-            //{
-            //    Assert.StartsWith("DSA", d.Key);
-            //}
-            //Assert.Equal("App not found", ex.Message);
-            //Assert.Equal("App not found", ex.Message);
+            var apps = new List<string>(new string[] { "DSAProductDC", "DSAWebApp" });
+            var result = sut.GetCacheDataByMultipleServiceNames(apps);
+            // assert
+            foreach (var d in result)
+            {
+                bool error = true;
+                foreach (var app in apps)
+                {
+                    if (d.Key.StartsWith(app))
+                    {
+                        error = false;
+                        break;
+                    }
+                }
+                if (error)
+                {
+                    Assert.True(false);
+                }
+            }
+            Assert.True(true);
         }
     }
 }

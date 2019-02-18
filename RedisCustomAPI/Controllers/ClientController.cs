@@ -11,8 +11,8 @@ namespace RedisCustomAPI.Controllers
     [ApiController]
     public class ClientController : ControllerBase
     {
-        public IDellServerService _service;
-        public ClientController(IDellServerService service)
+        public IRedisServerService _service;
+        public ClientController(IRedisServerService service)
         {
             this._service = service;
         }
@@ -25,7 +25,7 @@ namespace RedisCustomAPI.Controllers
         }
 
         [HttpGet("appdata")]
-        public IActionResult GetAppData([FromQuery] string app)
+        public IActionResult GetCacheDataByServiceName([FromQuery] string app)
         {
             try
             {
@@ -37,6 +37,13 @@ namespace RedisCustomAPI.Controllers
                 return NotFound("App not found");
             }
             
+        }
+        [HttpGet("multiappdata")]
+        public IActionResult GetCacheDataByMultipleServiceNames([FromQuery] string apps)
+        {
+            string[] appNames = apps.Split(",");
+            var result = _service.GetCacheDataByMultipleServiceNames(new List<string>(appNames));
+            return Ok(result);
         }
     }
 }
