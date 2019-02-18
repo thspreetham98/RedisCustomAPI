@@ -37,12 +37,13 @@ namespace ServiceTest
 
             // act
             var result = sut.GetAllAppData("DSA");
-
+            var ex = Assert.Throws<ArgumentException>(() => sut.GetAllAppData("No such app"));
             // assert
             foreach(var d in result)
             {
                 Assert.StartsWith("DSA", d.Key);
             }
+            Assert.Equal("App not found", ex.Message);
         }
     }
 }

@@ -61,8 +61,10 @@ namespace LocalServiceTest
             sut.SetData(data);
             // act
             var result = sut.GetData(data.Key);
+            var temp = sut.GetData("no such key");
             // assert
             Assert.Equal(data.Value, result);
+            Assert.Null(temp);
         }
 
         [Fact]
@@ -118,9 +120,11 @@ namespace LocalServiceTest
             // act
             var result1 = sut.GetAllAppData("app");
             var result2 = sut.GetAllAppData("not_app");
+            var ex = Assert.Throws<ArgumentException>(() => sut.GetAllAppData("No such app"));
             // assert
             Assert.Equal(appX, result1);
             Assert.Equal(appY, result2);
+            Assert.Equal("App not found", ex.Message);
         }
 
     }

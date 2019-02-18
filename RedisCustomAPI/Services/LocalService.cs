@@ -44,6 +44,10 @@ namespace RedisCustomAPI.Services
                 try
                 {
                     var keys = client.ScanAllKeys(appName);
+                    if(keys.Count() == 0)
+                    {
+                        throw new ArgumentException("App not found");
+                    }
                     return new RedisDataTable(client.GetAll<string>(keys));
                 }
                 catch (RedisException)
