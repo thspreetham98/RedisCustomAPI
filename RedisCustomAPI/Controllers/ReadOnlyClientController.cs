@@ -7,7 +7,7 @@ using RedisCustomAPI.Services;
 
 namespace RedisCustomAPI.Controllers
 {
-    [Route("api/readonly")]
+    [Route("api/local/readonly")]
     [ApiController]
     public class ReadOnlyClientController : ControllerBase
     {
