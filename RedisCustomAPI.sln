@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedisCustomAPI", "RedisCustomAPI\RedisCustomAPI.csproj", "{C7AB3C3D-B69A-41ED-AD2A-69346C52468D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedisCustomAPI", "RedisCustomAPI\RedisCustomAPI.csproj", "{C7AB3C3D-B69A-41ED-AD2A-69346C52468D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceTest", "LocaServicelTest\ServiceTest.csproj", "{2A9E9550-8D02-4E5A-B558-FD60CF8EB412}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceTestOLD", "LocaServicelTest\ServiceTestOLD.csproj", "{2A9E9550-8D02-4E5A-B558-FD60CF8EB412}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesTestLocal", "ServicesTest\ServicesTestLocal.csproj", "{6D7C848A-C9E9-4B09-B77E-9FFBA3F80189}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{2A9E9550-8D02-4E5A-B558-FD60CF8EB412}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A9E9550-8D02-4E5A-B558-FD60CF8EB412}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A9E9550-8D02-4E5A-B558-FD60CF8EB412}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D7C848A-C9E9-4B09-B77E-9FFBA3F80189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D7C848A-C9E9-4B09-B77E-9FFBA3F80189}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D7C848A-C9E9-4B09-B77E-9FFBA3F80189}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D7C848A-C9E9-4B09-B77E-9FFBA3F80189}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

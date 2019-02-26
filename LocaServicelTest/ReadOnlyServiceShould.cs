@@ -7,15 +7,15 @@ using System.Collections.Generic;
 
 namespace ServiceTest
 {
-    public class RedisServerServiceShould
+    public class ReadOnlyServiceShould
     {
         private readonly ITestOutputHelper _output;
-        private readonly IRedisServerService _service;
+        private readonly IReadOnlyService _service;
 
-        public RedisServerServiceShould(ITestOutputHelper output)
+        public ReadOnlyServiceShould(ITestOutputHelper output)
         {
             _output = output;
-            _service = new RedisServerService();
+            _service = new ReadOnlyService();
         }
 
         [Fact]
@@ -73,6 +73,22 @@ namespace ServiceTest
                 }
             }
             Assert.True(true);
+        }
+
+        [Fact]
+        public void CheckUsuage()
+        {
+            // arrange
+            var sut = _service;
+            // act
+            var usage = _service.CheckUsage();
+            _output.WriteLine(System.Text.Encoding.UTF8.GetString(usage));
+            //_output.WriteLine(usage.ToString());
+            //foreach(var d in usage)
+            //{
+            //    _output.WriteLine(d.Key + ": " + d.Value);
+            //}
+            // assert
         }
     }
 }

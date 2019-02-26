@@ -7,15 +7,15 @@ using System.Collections.Generic;
 
 namespace LocalServiceTest
 {
-    public class LocalServiceShould
+    public class ReadWriteServiceShould
     {
         private readonly ITestOutputHelper _output;
-        private readonly ILocalService _service;
+        private readonly IReadWriteService _service;
 
-        public LocalServiceShould(ITestOutputHelper output)
+        public ReadWriteServiceShould(ITestOutputHelper output)
         {
             _output = output;
-            _service = new LocalService();
+            _service = new ReadWriteService();
         }
 
         [Fact]

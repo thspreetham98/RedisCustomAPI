@@ -9,10 +9,10 @@ namespace RedisCustomAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClientController : ControllerBase
+    public class ClientControllerOLD : ControllerBase
     {
-        public IRedisServerService _service;
-        public ClientController(IRedisServerService service)
+        public IReadOnlyService _service;
+        public ClientControllerOLD(IReadOnlyService service)
         {
             this._service = service;
         }

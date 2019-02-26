@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace RedisCustomAPI.Services
 {
-    public interface IRedisServerService
+    public interface IReadOnlyService
     {
         bool Ping();
+        string GetData(string key);
         RedisDataTable GetCacheDataByServiceName(string appName);
         RedisDataTable GetCacheDataByMultipleServiceNames(List<string> apps);
     }

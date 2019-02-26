@@ -9,25 +9,17 @@ using ServiceStack.Redis;
 
 namespace RedisCustomAPI.Services
 {
-    public class RedisServerService : IRedisServerService
+    public class ReadOnlyService : IReadOnlyService
     {
-        private readonly string _host;
-        private readonly int _port;
-        private readonly string _password;
+        protected readonly string _host;
+        protected readonly int _port;
+        protected readonly string _password;
 
-        public RedisServerService()
+        public ReadOnlyService(string host, int port, string password)
         {
-            var strKey = "36fc9e60-c465-11cf-8056-444553540000";
-            var strEncrypted = "Km3OJbjCLrPOAJyhf4s8HA==";
-            TripleDESCryptoServiceProvider cryptoServiceProvider = new TripleDESCryptoServiceProvider();
-            byte[] hash = new MD5CryptoServiceProvider().ComputeHash(Encoding.ASCII.GetBytes(strKey));
-            cryptoServiceProvider.Key = hash;
-            cryptoServiceProvider.Mode = CipherMode.ECB;
-            byte[] inputBuffer = Convert.FromBase64String(strEncrypted);
-
-            this._host = "redis-14336.dcfredis-np.us.dell.com";
-            this._port = 14336;
-            this._password = Encoding.ASCII.GetString(cryptoServiceProvider.CreateDecryptor().TransformFinalBlock(inputBuffer, 0, inputBuffer.Length));
+            _host = host;
+            _port = port;
+            _password = password;
         }
 
         public RedisDataTable GetCacheDataByMultipleServiceNames(List<string> apps)
@@ -51,7 +43,6 @@ namespace RedisCustomAPI.Services
                             continue;
                         }
                         client.GetAll<string>(keys).ToList().ForEach(x => result.Add(x.Key, x.Value));
-                        //return new RedisDataTable(client.GetAll<string>(keys));
                     }
                     catch (RedisException)
                     {
@@ -80,6 +71,21 @@ namespace RedisCustomAPI.Services
                         throw new ArgumentException("App not found");
                     }
                     return new RedisDataTable(client.GetAll<string>(keys));
+                }
+                catch (RedisException)
+                {
+                    return null;
+                }
+            }
+        }
+
+        public string GetData(string key)
+        {
+            using (IRedisClient client = new RedisClient(_host, _port, _password))
+            {
+                try
+                {
+                    return client.Get<string>(key);
                 }
                 catch (RedisException)
                 {
