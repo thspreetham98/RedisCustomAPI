@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RedisCustomAPI.Services;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace RedisCustomAPI
 {
@@ -27,6 +28,15 @@ namespace RedisCustomAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "Redis API"
+                });
+            });
+
             var redisConfig = Configuration.GetSection("RedisServerConfig").GetSection("LocalServer");
             services.AddTransient<IReadWriteService>(s => new ReadWriteService(redisConfig.GetValue<string>("Host"),
                                                                                 redisConfig.GetValue<int>("Port"),
@@ -54,6 +64,11 @@ namespace RedisCustomAPI
 
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
         }
     }
 }
