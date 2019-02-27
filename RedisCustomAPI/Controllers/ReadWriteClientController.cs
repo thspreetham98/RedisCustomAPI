@@ -7,7 +7,7 @@ using RedisCustomAPI.Services;
 
 namespace RedisCustomAPI.Controllers
 {
-    [Route("api/local/readwrite")]
+    [Route("api/readwrite")]
     [ApiController]
     public class ReadWriteClientController : ControllerBase
     {

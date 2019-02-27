@@ -9,8 +9,8 @@ namespace RedisCustomAPI.Services
 {
     public class ReadWriteService : ReadOnlyService, IReadWriteService
     {
-        public ReadWriteService(string host, int port, string password)
-            : base(host, port, password){}
+        public ReadWriteService(string host, int port, string password, bool encrypted)
+            : base(host, port, password, encrypted){}
 
 
         public void FlushAll()

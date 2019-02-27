@@ -15,11 +15,24 @@ namespace RedisCustomAPI.Services
         protected readonly int _port;
         protected readonly string _password;
 
-        public ReadOnlyService(string host, int port, string password)
+        public ReadOnlyService(string host, int port, string password, bool encrypted)
         {
             _host = host;
             _port = port;
-            _password = password;
+            if (!encrypted) { _password = password; }
+            else
+            {
+                TripleDESCryptoServiceProvider cryptoServiceProvider = new TripleDESCryptoServiceProvider();
+                var strKey = "36fc9e60-c465-11cf-8056-444553540000";
+                byte[] hash = new MD5CryptoServiceProvider().ComputeHash(Encoding.ASCII.GetBytes(strKey));
+                cryptoServiceProvider.Key = hash;
+                cryptoServiceProvider.Mode = CipherMode.ECB;
+                byte[] inputBuffer = Convert.FromBase64String(password);
+
+                this._host = host;
+                this._port = port;
+                this._password = Encoding.ASCII.GetString(cryptoServiceProvider.CreateDecryptor().TransformFinalBlock(inputBuffer, 0, inputBuffer.Length));
+            }
         }
 
         public RedisDataTable GetCacheDataByMultipleServiceNames(List<string> apps)

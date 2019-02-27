@@ -37,13 +37,17 @@ namespace RedisCustomAPI
                 });
             });
 
-            var redisConfig = Configuration.GetSection("RedisServerConfig").GetSection("LocalServer");
-            services.AddTransient<IReadWriteService>(s => new ReadWriteService(redisConfig.GetValue<string>("Host"),
-                                                                                redisConfig.GetValue<int>("Port"),
-                                                                                redisConfig.GetValue<string>("Password")));
-            services.AddTransient<IReadOnlyService>(s => new ReadOnlyService(redisConfig.GetValue<string>("Host"),
-                                                                                redisConfig.GetValue<int>("Port"),
-                                                                                redisConfig.GetValue<string>("Password")));
+            var localConfig = Configuration.GetSection("RedisServerConfig").GetSection("LocalServer");
+            var dellConfig = Configuration.GetSection("RedisServerConfig").GetSection("DellServer");
+
+            services.AddTransient<IReadWriteService>(s => new ReadWriteService(localConfig.GetValue<string>("Host"),
+                                                                                localConfig.GetValue<int>("Port"),
+                                                                                localConfig.GetValue<string>("Password"),
+                                                                                localConfig.GetValue<bool>("Encrypted")));
+            services.AddTransient<IReadOnlyService>(s => new ReadOnlyService(dellConfig.GetValue<string>("Host"),
+                                                                                dellConfig.GetValue<int>("Port"),
+                                                                                dellConfig.GetValue<string>("Password"),
+                                                                                dellConfig.GetValue<bool>("Encrypted")));
             //services.AddTransient<IReadWriteService>(s => new ReadWriteService("127.0.0.1", 6379, null));
             //services.AddTransient<IReadOnlyService>(s => new ReadOnlyService("127.0.0.1", 6379, null));
             //services.AddSingleton<IReadOnlyService, ReadOnlyService>();
