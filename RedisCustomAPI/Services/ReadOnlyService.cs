@@ -92,6 +92,35 @@ namespace RedisCustomAPI.Services
             }
         }
 
+        public Task<RedisDataTable> GetCacheDataByServiceNameAsync(string appName)
+        {
+            if (string.IsNullOrEmpty(appName))
+            {
+                throw new ArgumentNullException("appName cannot be null");
+            }
+
+            appName += "*";
+            using (IRedisClient client = new RedisClient(_host, _port, _password))
+            {
+                try
+                {
+                    var keys = client.ScanAllKeys(appName);
+                    if (keys.Count() == 0)
+                    {
+                        throw new ArgumentException("App not found");
+                    }
+                    var temp = new RedisDataTable(client.GetAll<string>(keys));
+                    return Task.FromResult(temp);
+                    //return Task.FromResult<string>(client.Get<string>(key));
+                    //return new RedisDataTable(client.GetAll<string>(keys));
+                }
+                catch (RedisException)
+                {
+                    return null;
+                }
+            }
+        }
+
         public string GetData(string key)
         {
             using (IRedisClient client = new RedisClient(_host, _port, _password))
@@ -99,6 +128,22 @@ namespace RedisCustomAPI.Services
                 try
                 {
                     return client.Get<string>(key);
+                }
+                catch (RedisException)
+                {
+                    return null;
+                }
+            }
+        }
+
+        public Task<string> GetDataAsync(string key)
+        {
+            using (IRedisClient client = new RedisClient(_host, _port, _password))
+            {
+                try
+                {
+                    return Task.FromResult<string>(client.Get<string>(key));
+                    //return client.Get<string>(key);
                 }
                 catch (RedisException)
                 {
@@ -122,5 +167,6 @@ namespace RedisCustomAPI.Services
                 }
             }
         }
+        
     }
 }

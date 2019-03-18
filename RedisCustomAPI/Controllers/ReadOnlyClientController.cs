@@ -18,25 +18,25 @@ namespace RedisCustomAPI.Controllers
         }
 
         [HttpGet("ping")]
-        public IActionResult Ping()
+        public async Task<IActionResult> Ping()
         {
-            var result = _service.Ping();
+            var result = await Task.Run(() => _service.Ping());
             return Ok(result);
         }
 
         [HttpGet("getdata")]
-        public IActionResult GetData([FromQuery]string key)
+        public async Task<IActionResult> GetDataAsync([FromQuery]string key)
         {
-            var result = _service.GetData(key);
+            var result = await Task.Run(() => _service.GetDataAsync(key));
             return Ok(result);
         }
 
         [HttpGet("appdata")]
-        public IActionResult GetCacheDataByServiceName([FromQuery] string app)
+        public async Task<IActionResult> GetCacheDataByServiceName([FromQuery] string app)
         {
             try
             {
-                var result = _service.GetCacheDataByServiceName(app);
+                var result = await Task.Run(() => _service.GetCacheDataByServiceName(app));
                 return Ok(result);
             }
             catch(ArgumentException)
@@ -45,11 +45,14 @@ namespace RedisCustomAPI.Controllers
             }
             
         }
+        
+
         [HttpGet("multiappdata")]
-        public IActionResult GetCacheDataByMultipleServiceNames([FromQuery] string apps)
+        public async Task<IActionResult> GetCacheDataByMultipleServiceNamesAsync([FromQuery] string apps)
         {
             string[] appNames = apps.Split(",");
-            var result = _service.GetCacheDataByMultipleServiceNames(new List<string>(appNames));
+            var result = await Task.Run(() =>
+                        _service.GetCacheDataByMultipleServiceNames(new List<string>(appNames)));
             return Ok(result);
         }
     }

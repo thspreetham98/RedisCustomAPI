@@ -12,5 +12,7 @@ namespace RedisCustomAPI.Services
         string GetData(string key);
         RedisDataTable GetCacheDataByServiceName(string appName);
         RedisDataTable GetCacheDataByMultipleServiceNames(List<string> apps);
+        Task<string> GetDataAsync(string key);
+        Task<RedisDataTable> GetCacheDataByServiceNameAsync(string appName);
     }
 }
